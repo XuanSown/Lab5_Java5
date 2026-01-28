@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -31,7 +32,7 @@ public class ShoppingCartController {
         return "redirect:/cart/view";
     }
 
-    @GetMapping("/cart/update/{id}")
+    @PostMapping("/cart/update/{id}")
     public String update(@PathVariable("id") Integer id, @RequestParam("qty") Integer qty){
         cart.update(id, qty);
         return "redirect:/cart/view";

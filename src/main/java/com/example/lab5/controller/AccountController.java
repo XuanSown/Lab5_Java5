@@ -43,9 +43,10 @@ public class AccountController {
                 cookieService.remove("user");
             }
             model.addAttribute("message", "Login thành công!");
+            return "redirect:/item/index";
         } else {
             model.addAttribute("message", "Sai username hoặc password!");
+            return "account/login";
         }
-        return "account/login";
     }
 }
