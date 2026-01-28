@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <div class="card">
+        <div class="card-header">Giỏ Hàng Của Bạn</div>
+        <div class="card-body">
+            <div th:if="${cart.count == 0}" class="alert alert-warning">
+                Giỏ hàng đang trống!
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quatity</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${cart.items}">
+                        <td th:text="${item.id}"></td>
+                        <td th:text="${item.name}"></td>
+                        <td th:text="${#numbers.formatDecimal(item.price, 0, 'POINT', 0, 'COMMA')}"></td>
+                        <td style="width: 120px">
+                            <form th:action="@{|/cart/update/${item.id}|}" method="post">
+                                <input type="number" name="qty" th:value="${item.qty}"
+                                       min="1" class="form-control"
+                                       onblur="this.form.submit()">
+                            </form>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(item.price * item.qty, 0, 'POINT', 0, 'COMMA')}"></td>
+                        <td>
+                            <a th:href="@{|/cart/remove/${item.id}|}" class="btn btn-outline-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer" th:unless="${cart.count == 0}">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="/cart/clear" class="btn btn-danger">Clear giỏ</a>
+                    <a href="/item/index" class="btn btn-primary">Thêm nữa</a>
+                </div>
+                <h4 class="text">Tổng tiền: <span th:text="${#numbers.formatDecimal(cart.amount, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'"></span></h4>
+            </div>
+        </div>
+        <div class="card-footer" th:if="${cart.count == 0}">
+            <a href="/item/index" class="btn btn-outline-primary">Mua sắm ngay</a>
+        </div>
+    </div>
+</body>
+</html>
